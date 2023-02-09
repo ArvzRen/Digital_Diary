@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dear Diary</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+</head>
+
+<body>
+        
+    <div
+        style="color: #FFF; background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%),url(./static/assets/bg/bg-cloud.jpg); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+
+        <!--App name-->
+        <div class=" container-fluid text-center"
+            style="background-color: #82affd; font-family:'Brush Script MT', cursive; font-size: 70px; min-height: 8vh; margin-top: 10px;">
+            <h1>Dear Diary</h1>
+        </div>
+
+        <!--Date-->
+        <div class="container-fluid text-left"
+            style="background-color: #5b6af7; font-family: 'Courier New', monospace; min-height: 3vh;">
+            <p id="display_date">Date</p>
+        </div>
+
+        <div class="container-fluid text-right mb-2" style="width: 100%; min-height: 3vh;" id="google_translate_div">
+        </div>
+
+        <!--New entry and detect emotion-->
+        <div class="container-fluid" style=" min-height: 22vh;">
+            <div style=" color:black; font-family:'Courier New', monospace; width: 100%;">
+                <textarea class="form-control" id="text" name="text_input" rows="4" data-mdb-showcounter="true"
+                    maxlength="200" placeholder="How was your day? :3" style="resize:none"></textarea>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-6 text-left">
+                    <button class="btn btn-lg" id="predict_button" type="submit" name="submit_b" value="submit_p"
+                        style="color:white; background-color: #5b6af7; font-family: 'Courier New'; ">Predict Emotion</button>
+                </div>
+
+                <div class="col-6 text-right ">
+                    <button class="btn btn-lg" id="save_button" type="submit" name="submit_b" value="submit_s"
+                        style="color:white; background-color: #5b6af7; font-family: 'Courier New'; ">Save Entry</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Predicted emotion-->
+        <div class="container-fluid" id="prediction_container"
+            style="color:black; font-family: 'Courier New'; font-size:20px; min-height: 20vh;">
+            <p id="prediction" style="display: none"></p>
+            <img id="emo_img_url" src="" width="55" min-height="50" alt="" style="display: none">
+        </div>
+
+        <!--Entries-->
+        <div class="container-fluid text-left " style="min-height: 40vh ">
+            <div class="row"
+                style="background-color: #82affd; color: #FFF; font-family: 'Brush Script MT', cursive; font-size: 30px; min-height: 4vh; padding-left: 30px; padding-top: 10px; ">
+                <p>Your entries ♡</p>
+            </div>
+            <div class="row row-col-3"
+                style="background-color: #5b6af7; color: #000; font-family: 'Courier New'; min-height: 35vh ">
+                {% for entry in entries %}
+                <div class="col mt-2 mb-2 ml-2 mr-2 border rounded" style=" background-color: white ; min-height: 33vh">
+                    <h4>{{entry["date"]}}</h4>
+                    <p>{{entry["entry"]}}</p>
+                    <img src="{{entry['emotion_url']}}" width="55" min-height="50" alt="">
+                    <p>{{entry["emotion"]}}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row text-right" style="background-color: #82affd;min-height: 4vh ">
+            </div>
+
+        </div>
+
+        <!--UI chatbot-->
+        <div class="chatbox">
+            <!--Chat-->
+            <div class="chatbox__chat">
+
+                <!--Chatbot header-->
+                <div class="row chatbox__header">
+                    <div class="col-2 chatbox__image__header">
+                        <img class="chatbox__image" src="./static/assets/chaticons/bot.jpg"  width="55" height="55" alt="image">
+                    </div>
+                    <div class="col-10 chatbox__content__header">                        
+                        <p class="chatbox__description">Welcome! I'm ChatBot :D How can I help you?</p>
+                    </div>
+                </div>
+
+                <!--Chatbot messages-->
+                <div class="row chatbox__messages__cotainer">
+                    <div class="col" id="chat_messages">
+                        <div class="user__messages">
+                            Hi!
+                            <!--The user message inserts here-->
+                        </div>
+                        <div class="bot__messages">
+                            Hi!
+                            <!--The chatbot message inserts here.-->
+                        </div>
+                    </div>
+                </div>
+                
+
+                <!--Chatbot Footer-->
+                <div class="row chatbox__footer">
+                    <div class="col-9 text-left chatbox__input">
+                        <input type="text" class="form-control" id="bot_input_text"
+                            placeholder="Type here...">
+                    </div>
+                    <div class="col-3 text-left chatbox__send__button">
+                        <button class="btn" id="send_button">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!--Chatbot button-->
+            <div class="chatbox__button">
+                <button id="open_button"></button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
